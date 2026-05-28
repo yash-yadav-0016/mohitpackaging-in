@@ -72,19 +72,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Mohit Packaging Industries — Corrugated Boxes & Industrial Packaging" },
+      {
+        name: "description",
+        content:
+          "Manufacturer of 3/5/7 ply corrugated boxes, die cut boxes, sheets, wooden pallets and edge protectors. ISO 9001 certified, since 2008. Dharuhera, Haryana.",
+      },
+      { name: "theme-color", content: "#F5F1E8" },
+      { property: "og:title", content: "Mohit Packaging Industries" },
+      {
+        property: "og:description",
+        content:
+          "Reliable corrugated packaging solutions since 2008. Engineered for strength. Built for scale.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
+      { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {
         rel: "stylesheet",
-        href: appCss,
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
       },
     ],
   }),
@@ -93,6 +102,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 });
+
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
