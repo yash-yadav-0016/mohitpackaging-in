@@ -574,7 +574,7 @@ function WhySection() {
         <div className="max-w-2xl">
           <SectionLabel>Why Choose Us</SectionLabel>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Built around the things buyers actually need.
+            Manufacturing capability, quality control and on-time delivery.
           </h2>
         </div>
 
@@ -624,11 +624,11 @@ function IndustriesSection() {
             Industries Served
           </div>
           <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Trusted across industrial verticals.
+            Packaging for manufacturing and logistics.
           </h2>
           <p className="mt-4 text-base text-white/70">
-            From e-commerce shipments to heavy industrial supply chains —
-            packaging that arrives intact.
+            Supplying corrugated and wooden packaging to e-commerce, FMCG,
+            logistics, electronics and industrial supply chains across India.
           </p>
         </div>
 
@@ -847,7 +847,7 @@ function Footer() {
           </p>
           <div className="mt-5 inline-flex items-center gap-2 rounded-sm border border-white/15 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/80">
             <Zap className="h-3.5 w-3.5 text-[color:var(--primary)]" />
-            15+ Years Experience
+            Since 2008
           </div>
         </div>
 
