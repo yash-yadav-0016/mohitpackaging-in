@@ -72,20 +72,28 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Mohit Packaging Industries — Corrugated Boxes & Industrial Packaging" },
+      {
+        title:
+          "Corrugated Box Manufacturer & Supplier in Dharuhera | Mohit Packaging Industries",
+      },
       {
         name: "description",
         content:
-          "Manufacturer of 3/5/7 ply corrugated boxes, die cut boxes, sheets, wooden pallets and edge protectors. ISO 9001 certified, since 2008. Dharuhera, Haryana.",
+          "ISO 9001:2008 certified manufacturer of 3/5/7 ply corrugated boxes, die cut boxes, sheets, wooden pallets and edge protectors. Bulk supply across India since 2008.",
       },
       { name: "theme-color", content: "#F5F1E8" },
-      { property: "og:title", content: "Mohit Packaging Industries" },
+      {
+        property: "og:title",
+        content:
+          "Corrugated Box Manufacturer & Supplier Since 2008 | Mohit Packaging Industries",
+      },
       {
         property: "og:description",
         content:
-          "Reliable corrugated packaging solutions since 2008. Engineered for strength. Built for scale.",
+          "Custom corrugated boxes, sheets, wooden pallets and industrial packaging for bulk supply across India.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Mohit Packaging Industries" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
@@ -94,6 +102,51 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Mohit Packaging Industries",
+          foundingDate: "2008",
+          description:
+            "ISO 9001:2008 certified manufacturer and supplier of corrugated boxes, die cut boxes, corrugated sheets, wooden pallets, wooden boxes and edge protectors.",
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: "Vill. Akera, Narayan Vihar",
+            addressLocality: "Dharuhera",
+            addressRegion: "Haryana",
+            postalCode: "123106",
+            addressCountry: "IN",
+          },
+          areaServed: "IN",
+          telephone: "+91-98111-56482",
+          email: "sales@mohitpackaging.in",
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "Industrial Packaging",
+            itemListElement: [
+              "3 Ply Corrugated Boxes",
+              "5 Ply Corrugated Boxes",
+              "7 Ply Corrugated Boxes",
+              "Printed Corrugated Boxes",
+              "Industrial Corrugated Boxes",
+              "Die Cut Folding Boxes",
+              "Plain Die Cut Boxes",
+              "Corrugated Sheets",
+              "Corrugated Rolls",
+              "Wooden Pallets",
+              "Wooden Boxes",
+              "Edge Protectors",
+            ].map((n) => ({
+              "@type": "Offer",
+              itemOffered: { "@type": "Product", name: n },
+            })),
+          },
+        }),
       },
     ],
   }),
