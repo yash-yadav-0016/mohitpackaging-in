@@ -22,7 +22,6 @@ import {
   Users,
   IndianRupee,
   Layers,
-  Scissors,
   Ruler,
   BadgeCheck,
 } from "lucide-react";
