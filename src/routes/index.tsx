@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
   Phone,
@@ -16,10 +16,15 @@ import {
   Menu,
   X,
   ShoppingCart,
-  Zap,
   Cpu,
   Building2,
   Package,
+  Users,
+  IndianRupee,
+  Layers,
+  Scissors,
+  Ruler,
+  BadgeCheck,
 } from "lucide-react";
 
 import heroBoxes from "../assets/hero-boxes.jpg";
@@ -40,6 +45,12 @@ import aboutFactory from "../assets/about-factory.jpg";
 export const Route = createFileRoute("/")({
   component: Index,
 });
+
+/* ----- Placeholders for future integration ----- */
+const WHATSAPP_NUMBER = "919811156482"; // E.164 without '+', update when finalised
+const PHONE_PRIMARY = "+91 98111 56482";
+const PHONE_SECONDARY = "+91 99921 96665";
+const EMAIL_PRIMARY = "sales@mohitpackaging.in";
 
 /* ---------------- Reusable bits ---------------- */
 
@@ -168,7 +179,7 @@ function Navbar() {
             href="#contact"
             className="inline-flex items-center gap-2 rounded-sm bg-[color:var(--foreground)] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-[color:var(--primary)]"
           >
-            Request Quote <ArrowRight className="h-3.5 w-3.5" />
+            Request Bulk Quote <ArrowRight className="h-3.5 w-3.5" />
           </a>
         </div>
 
@@ -199,7 +210,7 @@ function Navbar() {
               onClick={() => setOpen(false)}
               className="mt-2 inline-flex items-center justify-center gap-2 rounded-sm bg-[color:var(--primary)] px-5 py-3 text-xs font-semibold uppercase tracking-wider text-white"
             >
-              Request Quote
+              Request Bulk Quote
             </a>
           </div>
         </div>
@@ -214,9 +225,8 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-28 kraft-texture"
+      className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-24 kraft-texture"
     >
-      {/* animated background layers */}
       <div className="pointer-events-none absolute inset-0 flute-animated opacity-60" />
       <div className="pointer-events-none absolute -right-20 top-32 hidden lg:block">
         <div className="paper-fold h-40 w-40 origin-bottom rounded-sm bg-[color:var(--kraft)]/15 shadow-inner" />
@@ -229,24 +239,17 @@ function Hero() {
         <div className="reveal">
           <SectionLabel>EST. 2008 • Dharuhera, Haryana</SectionLabel>
           <h1 className="mt-6 text-4xl font-bold leading-[1.05] text-[color:var(--foreground)] sm:text-5xl lg:text-6xl">
-            Reliable Corrugated{" "}
-            <span className="text-[color:var(--primary)]">Packaging Solutions</span>{" "}
+            Corrugated Box{" "}
+            <span className="text-[color:var(--primary)]">Manufacturer & Supplier</span>{" "}
             Since 2008
           </h1>
           <p className="mt-6 max-w-xl text-lg text-[color:var(--muted-foreground)]">
-            Engineered for Strength. Built for Scale. Manufacturing 3-ply, 5-ply
-            and 7-ply corrugated packaging for industrial supply chains across
-            India.
+            Custom Corrugated Boxes, Corrugated Sheets, Wooden Pallets and
+            Industrial Packaging Solutions for bulk supply across India.
           </p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <PrimaryButton href="#contact">Get a Quote</PrimaryButton>
+            <PrimaryButton href="#contact">Request Bulk Quote</PrimaryButton>
             <GhostButton href="#products">View Products</GhostButton>
-          </div>
-
-          <div className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-[color:var(--border)] pt-6">
-            <Stat value="Since" label="2008" />
-            <Stat value="ISO" label="9001:2008 Certified" />
-            <Stat value="26–50" label="Employees" />
           </div>
         </div>
 
@@ -255,7 +258,7 @@ function Hero() {
           <div className="relative overflow-hidden rounded-sm border border-[color:var(--border)] shadow-2xl">
             <img
               src={heroBoxes}
-              alt="Stack of corrugated boxes in factory warehouse"
+              alt="Stack of corrugated boxes in Mohit Packaging Industries factory warehouse"
               width={1280}
               height={960}
               className="h-full w-full object-cover"
@@ -263,18 +266,18 @@ function Hero() {
             <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent p-5">
               <div className="text-white">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-80">
-                  Output Capacity
+                  Manufacturing Unit
                 </div>
                 <div className="font-display text-2xl font-bold">
-                  50,000+ units / month
+                  Dharuhera, Haryana
                 </div>
               </div>
               <div className="hidden h-12 w-px bg-white/30 sm:block" />
               <div className="hidden text-right text-white sm:block">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-80">
-                  Lead Time
+                  Certification
                 </div>
-                <div className="font-display text-2xl font-bold">7–10 days</div>
+                <div className="font-display text-2xl font-bold">ISO 9001:2008</div>
               </div>
             </div>
           </div>
@@ -284,16 +287,36 @@ function Hero() {
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+/* ---------------- Trust Strip ---------------- */
+
+const TRUST = [
+  { icon: ShieldCheck, label: "ISO 9001:2008 Certified" },
+  { icon: Clock, label: "15+ Years Experience" },
+  { icon: Users, label: "26–50 Employees" },
+  { icon: IndianRupee, label: "₹5–25 Cr Turnover" },
+  { icon: Truck, label: "Pan India Supply" },
+];
+
+function TrustStrip() {
   return (
-    <div>
-      <div className="font-display text-2xl font-bold text-[color:var(--foreground)] sm:text-3xl">
-        {value}
+    <section
+      aria-label="Trust signals"
+      className="border-y border-[color:var(--border)] bg-[color:var(--beige-dark)]"
+    >
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px overflow-hidden bg-[color:var(--border)] px-0 md:grid-cols-5">
+        {TRUST.map(({ icon: Icon, label }) => (
+          <div
+            key={label}
+            className="flex items-center justify-center gap-3 bg-[color:var(--beige-dark)] px-4 py-5 text-center"
+          >
+            <Icon className="h-5 w-5 flex-shrink-0 text-[color:var(--primary)]" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-[color:var(--foreground)] sm:text-sm">
+              {label}
+            </span>
+          </div>
+        ))}
       </div>
-      <div className="mt-1 text-xs leading-snug text-[color:var(--muted-foreground)]">
-        {label}
-      </div>
-    </div>
+    </section>
   );
 }
 
@@ -302,25 +325,25 @@ function Stat({ value, label }: { value: string; label: string }) {
 const PROCESS = [
   {
     n: "01",
-    title: "Raw Kraft Paper",
-    desc: "Premium grade kraft paper rolls sourced from certified mills, tested for GSM and burst strength.",
+    title: "Kraft Paper Sourcing",
+    desc: "Premium grade kraft paper rolls from certified mills, tested for GSM and burst strength.",
     img: process1,
   },
   {
     n: "02",
-    title: "Corrugated Layer Formation",
-    desc: "Heated flute rollers form precision waves and bond liners to deliver consistent edge crush resistance.",
+    title: "Corrugation Process",
+    desc: "Heated flute rollers form precision waves and bond liners for consistent edge crush resistance.",
     img: process2,
   },
   {
     n: "03",
-    title: "Cutting & Folding",
-    desc: "Computerised die-cutting, scoring and creasing for repeatable, dimensionally accurate boxes.",
+    title: "Cutting & Die Forming",
+    desc: "Computerised die-cutting, scoring and creasing for dimensionally accurate boxes.",
     img: process3,
   },
   {
     n: "04",
-    title: "Final Corrugated Box",
+    title: "Final Packaging Box",
     desc: "Stitched or glued, batch-inspected and stacked for dispatch — built to ship without failure.",
     img: process4,
   },
@@ -328,12 +351,12 @@ const PROCESS = [
 
 function ProcessSection() {
   return (
-    <section id="process" className="relative bg-[color:var(--beige-dark)] py-24">
+    <section id="process" className="relative bg-[color:var(--beige)] py-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <div className="max-w-2xl">
-          <SectionLabel>The Process</SectionLabel>
+          <SectionLabel>Manufacturing Process</SectionLabel>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
-            From kraft sheet to shipped box.
+            From kraft paper to shipped box.
           </h2>
           <p className="mt-4 text-base text-[color:var(--muted-foreground)]">
             A four-stage manufacturing line built around consistency, strength
@@ -403,7 +426,7 @@ function AboutSection() {
             <div className="absolute -inset-2 -z-10 bg-[color:var(--primary)]/10" />
             <img
               src={aboutFactory}
-              alt="Mohit Packaging Industries manufacturing facility"
+              alt="Mohit Packaging Industries manufacturing facility in Dharuhera, Haryana"
               loading="lazy"
               width={1280}
               height={900}
@@ -418,19 +441,26 @@ function AboutSection() {
             Manufacturer & Supplier of corrugated and industrial packaging.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[color:var(--muted-foreground)]">
-            Mohit Packaging Industries is based in Dharuhera, Haryana, and
-            manufactures 3-ply, 5-ply and 7-ply corrugated boxes, die cut
-            boxes, corrugated sheets, wooden pallets, wooden boxes and edge
-            protectors. The unit is ISO 9001:2008 certified and runs an
-            integrated line covering ply formation, die-cutting, stitching
-            and dispatch.
+            Established in 2008, Mohit Packaging Industries operates an
+            integrated corrugated packaging unit at Vill. Akera, Narayan Vihar,
+            Dharuhera (Dist. Rewari), Haryana. The plant manufactures 3 ply, 5
+            ply and 7 ply corrugated boxes, printed and industrial corrugated
+            boxes, die cut boxes, corrugated sheets and rolls, wooden pallets,
+            wooden boxes and edge protectors.
+          </p>
+          <p className="mt-4 text-base leading-relaxed text-[color:var(--muted-foreground)]">
+            The unit is ISO 9001:2008 certified and GST registered, with a
+            workforce of 26–50 employees and an annual turnover in the ₹5–25
+            crore range. Production covers in-house corrugation, die-cutting,
+            stitching, gluing and dispatch — supporting bulk orders and custom
+            specifications for buyers across India.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <Fact icon={<Factory className="h-5 w-5" />} label="Established 2008" />
             <Fact icon={<ShieldCheck className="h-5 w-5" />} label="ISO 9001:2008 Certified" />
-            <Fact icon={<Boxes className="h-5 w-5" />} label="26–50 Employees" />
-            <Fact icon={<Wrench className="h-5 w-5" />} label="₹5–25 Crore Turnover" />
+            <Fact icon={<Users className="h-5 w-5" />} label="26–50 Employees" />
+            <Fact icon={<IndianRupee className="h-5 w-5" />} label="₹5–25 Crore Turnover" />
           </div>
         </div>
       </div>
@@ -451,50 +481,43 @@ function Fact({ icon, label }: { icon: React.ReactNode; label: string }) {
 
 /* ---------------- Products ---------------- */
 
-const PRODUCTS = [
+type Product = { name: string; img: string };
+
+const PRODUCT_CATEGORIES: { label: string; items: Product[] }[] = [
   {
-    name: "3 Ply Corrugated Boxes",
-    img: p3ply,
-    spec: "Single wall • Lightweight goods up to 5 kg • Custom GSM",
+    label: "Corrugated Packaging",
+    items: [
+      { name: "3 Ply Corrugated Boxes", img: p3ply },
+      { name: "5 Ply Corrugated Boxes", img: p5ply },
+      { name: "7 Ply Corrugated Boxes", img: p7ply },
+      { name: "Printed Corrugated Boxes", img: p5ply },
+      { name: "Industrial Corrugated Boxes", img: p7ply },
+    ],
   },
   {
-    name: "5 Ply Corrugated Boxes",
-    img: p5ply,
-    spec: "Double wall • Medium duty • Up to 25 kg load",
+    label: "Die Cut Packaging",
+    items: [
+      { name: "Die Cut Folding Boxes", img: pDiecut },
+      { name: "Plain Die Cut Boxes", img: pDiecut },
+    ],
   },
   {
-    name: "7 Ply Corrugated Boxes",
-    img: p7ply,
-    spec: "Triple wall • Heavy duty industrial • Up to 100 kg",
-  },
-  {
-    name: "Die Cut Boxes",
-    img: pDiecut,
-    spec: "Custom shapes • Precision creasing • Brand-ready",
-  },
-  {
-    name: "Corrugated Sheets",
-    img: pSheets,
-    spec: "Flat sheets in 3/5/7 ply • Cut to size • Bulk supply",
-  },
-  {
-    name: "Wooden Pallets",
-    img: pPallet,
-    spec: "Pine / hardwood • Custom sizes • Export-grade options",
-  },
-  {
-    name: "Wooden Boxes",
-    img: pWoodbox,
-    spec: "Heavy machinery packaging • Nailed & screwed assembly",
-  },
-  {
-    name: "Edge Protectors",
-    img: pEdge,
-    spec: "L-angle boards • Pallet & corner protection • High GSM",
+    label: "Industrial Packaging",
+    items: [
+      { name: "Corrugated Sheets", img: pSheets },
+      { name: "Corrugated Rolls", img: pSheets },
+      { name: "Wooden Pallets", img: pPallet },
+      { name: "Wooden Boxes", img: pWoodbox },
+      { name: "Edge Protectors", img: pEdge },
+    ],
   },
 ];
 
-function ProductsSection() {
+function ProductsSection({
+  onRequestQuote,
+}: {
+  onRequestQuote: (productName: string) => void;
+}) {
   return (
     <section
       id="products"
@@ -510,13 +533,31 @@ function ProductsSection() {
           </div>
           <p className="max-w-md text-sm text-[color:var(--muted-foreground)]">
             All products available in custom dimensions, GSM and print
-            requirements. MOQ flexible for bulk orders.
+            requirements. MOQ flexible for bulk orders across India.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {PRODUCTS.map((p) => (
-            <ProductCard key={p.name} product={p} />
+        <div className="mt-12 space-y-14">
+          {PRODUCT_CATEGORIES.map((cat) => (
+            <div key={cat.label}>
+              <div className="flex items-end justify-between border-b border-[color:var(--border)] pb-3">
+                <h3 className="font-display text-xl font-bold sm:text-2xl">
+                  {cat.label}
+                </h3>
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[color:var(--muted-foreground)]">
+                  {cat.items.length} products
+                </span>
+              </div>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {cat.items.map((p) => (
+                  <ProductCard
+                    key={p.name}
+                    product={p}
+                    onRequestQuote={onRequestQuote}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
       </div>
@@ -524,7 +565,13 @@ function ProductsSection() {
   );
 }
 
-function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
+function ProductCard({
+  product,
+  onRequestQuote,
+}: {
+  product: Product;
+  onRequestQuote: (productName: string) => void;
+}) {
   return (
     <article className="group flex flex-col overflow-hidden rounded-sm border border-[color:var(--border)] bg-[color:var(--card)] transition-all hover:-translate-y-1 hover:shadow-xl">
       <div className="relative aspect-square overflow-hidden bg-[color:var(--beige)]">
@@ -538,33 +585,90 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
         />
       </div>
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-display text-base font-bold leading-snug">
+        <h4 className="font-display text-base font-bold leading-snug">
           {product.name}
-        </h3>
-        <p className="mt-2 flex-1 text-xs leading-relaxed text-[color:var(--muted-foreground)]">
-          {product.spec}
-        </p>
-        <a
-          href="#contact"
-          className="mt-4 inline-flex items-center justify-between border-t border-[color:var(--border)] pt-4 text-xs font-semibold uppercase tracking-wider text-[color:var(--foreground)] transition group-hover:text-[color:var(--primary)]"
+        </h4>
+        <ul className="mt-3 space-y-1.5 text-xs text-[color:var(--muted-foreground)]">
+          <li className="flex items-center gap-2">
+            <Ruler className="h-3.5 w-3.5 text-[color:var(--primary)]" />
+            Custom Sizes Available
+          </li>
+          <li className="flex items-center gap-2">
+            <Boxes className="h-3.5 w-3.5 text-[color:var(--primary)]" />
+            Bulk Orders Supported
+          </li>
+          <li className="flex items-center gap-2">
+            <BadgeCheck className="h-3.5 w-3.5 text-[color:var(--primary)]" />
+            Industrial Grade Materials
+          </li>
+        </ul>
+        <button
+          type="button"
+          onClick={() => onRequestQuote(product.name)}
+          className="mt-5 inline-flex items-center justify-between border-t border-[color:var(--border)] pt-4 text-xs font-semibold uppercase tracking-wider text-[color:var(--foreground)] transition group-hover:text-[color:var(--primary)]"
         >
           Request Quote
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-        </a>
+        </button>
       </div>
     </article>
+  );
+}
+
+/* ---------------- Business Facts ---------------- */
+
+const BUSINESS_FACTS = [
+  { icon: Factory, k: "Established", v: "2008" },
+  { icon: Building2, k: "Business Type", v: "Manufacturer & Supplier" },
+  { icon: Users, k: "Employees", v: "26–50" },
+  { icon: IndianRupee, k: "Annual Turnover", v: "₹5–25 Cr" },
+  { icon: ShieldCheck, k: "Certification", v: "ISO 9001:2008" },
+  { icon: MapPin, k: "Location", v: "Dharuhera, Haryana" },
+];
+
+function BusinessFactsSection() {
+  return (
+    <section className="bg-[color:var(--beige)] py-20">
+      <div className="mx-auto max-w-7xl px-5 lg:px-8">
+        <div className="max-w-2xl">
+          <SectionLabel>Company Facts</SectionLabel>
+          <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
+            Verified business details.
+          </h2>
+        </div>
+
+        <div className="mt-10 grid gap-px overflow-hidden rounded-sm border border-[color:var(--border)] bg-[color:var(--border)] sm:grid-cols-2 lg:grid-cols-3">
+          {BUSINESS_FACTS.map(({ icon: Icon, k, v }) => (
+            <div
+              key={k}
+              className="flex items-start gap-4 bg-[color:var(--card)] p-6"
+            >
+              <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-sm bg-[color:var(--primary)]/10 text-[color:var(--primary)]">
+                <Icon className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:var(--muted-foreground)]">
+                  {k}
+                </div>
+                <div className="mt-1 font-display text-lg font-bold">{v}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
 /* ---------------- Why Choose Us ---------------- */
 
 const WHY = [
-  { icon: Clock, title: "Since 2008", desc: "Manufacturer & supplier of corrugated and industrial packaging with consistent delivery." },
-  { icon: ShieldCheck, title: "Quality Control Process", desc: "Batch-level inspection on GSM, burst and edge strength." },
-  { icon: Factory, title: "Bulk Manufacturing", desc: "Integrated line built for high-volume production runs." },
-  { icon: Truck, title: "Timely Delivery", desc: "Planned dispatch windows across NCR and pan-India." },
-  { icon: Wrench, title: "Custom Solutions", desc: "Bespoke sizing, ply, GSM and print on every order." },
-  { icon: CheckCircle2, title: "ISO 9001:2008 Certified", desc: "Quality management system certified manufacturing unit." },
+  { icon: ShieldCheck, title: "Quality Control", desc: "Batch-level inspection on GSM, burst strength and edge crush." },
+  { icon: Factory, title: "Bulk Manufacturing", desc: "Integrated line built for high-volume corrugated production runs." },
+  { icon: Wrench, title: "Custom Packaging Solutions", desc: "Bespoke ply, dimensions, GSM and print on every order." },
+  { icon: Truck, title: "Timely Delivery", desc: "Planned dispatch windows across NCR and pan-India logistics partners." },
+  { icon: Layers, title: "Industrial Expertise", desc: "15+ years manufacturing corrugated and wooden packaging at scale." },
+  { icon: CheckCircle2, title: "Long-Term Reliability", desc: "Repeat supply contracts with industrial, FMCG and logistics buyers." },
 ];
 
 function WhySection() {
@@ -604,11 +708,31 @@ function WhySection() {
 /* ---------------- Industries ---------------- */
 
 const INDUSTRIES = [
-  { icon: ShoppingCart, label: "E-commerce" },
-  { icon: Boxes, label: "FMCG" },
-  { icon: Truck, label: "Logistics" },
-  { icon: Cpu, label: "Electronics" },
-  { icon: Building2, label: "Industrial Supply Chain" },
+  {
+    icon: ShoppingCart,
+    label: "E-commerce Packaging",
+    desc: "Double-wall shippers and printed mailers for D2C fulfilment and returns-safe transit.",
+  },
+  {
+    icon: Boxes,
+    label: "FMCG Packaging",
+    desc: "Master cartons and shelf-ready trays for fast-moving consumer goods distribution.",
+  },
+  {
+    icon: Cpu,
+    label: "Electronics Packaging",
+    desc: "Cushioned die cut inserts and 5/7 ply outers for safe component and appliance shipping.",
+  },
+  {
+    icon: Truck,
+    label: "Warehouse & Logistics",
+    desc: "Pallets, edge protectors and bulk corrugated sheets for unitised long-haul movement.",
+  },
+  {
+    icon: Building2,
+    label: "Industrial Machinery",
+    desc: "Wooden boxes and heavy-duty 7 ply crates for spares, tooling and capital equipment.",
+  },
 ];
 
 function IndustriesSection() {
@@ -628,20 +752,26 @@ function IndustriesSection() {
           </h2>
           <p className="mt-4 text-base text-white/70">
             Supplying corrugated and wooden packaging to e-commerce, FMCG,
-            logistics, electronics and industrial supply chains across India.
+            electronics, logistics and industrial machinery supply chains across
+            India.
           </p>
         </div>
 
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-          {INDUSTRIES.map(({ icon: Icon, label }) => (
+        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {INDUSTRIES.map(({ icon: Icon, label, desc }) => (
             <div
               key={label}
-              className="group flex flex-col items-center justify-center gap-4 rounded-sm border border-white/10 bg-white/[0.03] p-8 text-center transition hover:border-[color:var(--primary)] hover:bg-white/[0.06]"
+              className="group flex flex-col gap-4 rounded-sm border border-white/10 bg-white/[0.03] p-7 transition hover:border-[color:var(--primary)] hover:bg-white/[0.06]"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-sm bg-[color:var(--primary)]/15 text-[color:var(--primary)] transition group-hover:bg-[color:var(--primary)] group-hover:text-white">
-                <Icon className="h-7 w-7" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-sm bg-[color:var(--primary)]/15 text-[color:var(--primary)] transition group-hover:bg-[color:var(--primary)] group-hover:text-white">
+                <Icon className="h-6 w-6" />
               </div>
-              <div className="text-sm font-semibold">{label}</div>
+              <div>
+                <div className="font-display text-lg font-bold">{label}</div>
+                <p className="mt-2 text-sm leading-relaxed text-white/70">
+                  {desc}
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -650,16 +780,89 @@ function IndustriesSection() {
   );
 }
 
-/* ---------------- Contact ---------------- */
+/* ---------------- Contact / Quote Form ---------------- */
 
-function ContactSection() {
+type QuoteForm = {
+  name: string;
+  company: string;
+  phone: string;
+  email: string;
+  product: string;
+  quantity: string;
+  message: string;
+};
+
+const EMPTY_FORM: QuoteForm = {
+  name: "",
+  company: "",
+  phone: "",
+  email: "",
+  product: "",
+  quantity: "",
+  message: "",
+};
+
+function validateForm(f: QuoteForm): string | null {
+  if (!f.name.trim() || f.name.length > 100) return "Please enter your full name.";
+  if (f.company.length > 150) return "Company name is too long.";
+  if (!/^[+0-9 \-()]{7,20}$/.test(f.phone.trim()))
+    return "Please enter a valid phone number.";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim()) || f.email.length > 200)
+    return "Please enter a valid email address.";
+  if (!f.product.trim()) return "Please select a product.";
+  if (f.quantity.length > 100) return "Quantity field is too long.";
+  if (f.message.length > 1000) return "Message is too long (max 1000 chars).";
+  return null;
+}
+
+const ALL_PRODUCT_NAMES = PRODUCT_CATEGORIES.flatMap((c) => c.items.map((i) => i.name));
+
+function ContactSection({
+  form,
+  setForm,
+  formRef,
+}: {
+  form: QuoteForm;
+  setForm: (f: QuoteForm) => void;
+  formRef: React.RefObject<HTMLFormElement | null>;
+}) {
+  const [status, setStatus] = useState<
+    { kind: "idle" } | { kind: "ok" } | { kind: "err"; msg: string }
+  >({ kind: "idle" });
+
+  const waMessage = useMemo(() => {
+    const parts = [
+      "Hi Mohit Packaging Industries, I would like a bulk quote.",
+      form.product && `Product: ${form.product}`,
+      form.quantity && `Quantity: ${form.quantity}`,
+      form.company && `Company: ${form.company}`,
+      form.name && `Name: ${form.name}`,
+    ].filter(Boolean);
+    return encodeURIComponent(parts.join("\n"));
+  }, [form]);
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const err = validateForm(form);
+    if (err) {
+      setStatus({ kind: "err", msg: err });
+      return;
+    }
+    // TODO: wire to Web3Forms (POST https://api.web3forms.com/submit with access_key)
+    setStatus({ kind: "ok" });
+    setForm(EMPTY_FORM);
+  };
+
+  const setField = <K extends keyof QuoteForm>(k: K, v: QuoteForm[K]) =>
+    setForm({ ...form, [k]: v });
+
   return (
     <section id="contact" className="relative py-24">
       <div className="mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:gap-16 lg:px-8">
         <div>
-          <SectionLabel>Get in Touch</SectionLabel>
+          <SectionLabel>Bulk Quote Request</SectionLabel>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Request a quote for your packaging requirement.
+            Request a Bulk Packaging Quote
           </h2>
           <p className="mt-4 text-base text-[color:var(--muted-foreground)]">
             Share specifications and we will respond within one working day with
@@ -679,33 +882,37 @@ function ContactSection() {
             <ContactRow
               icon={<Phone className="h-5 w-5" />}
               title="Phone"
-              lines={["+91 98111 56482", "+91 99921 96665"]}
+              lines={[PHONE_PRIMARY, PHONE_SECONDARY]}
             />
             <ContactRow
               icon={<Mail className="h-5 w-5" />}
               title="Email"
-              lines={["sales@mohitpackaging.in"]}
+              lines={[EMAIL_PRIMARY]}
+            />
+            <ContactRow
+              icon={<Clock className="h-5 w-5" />}
+              title="Business Hours"
+              lines={["Mon – Sat: 9:00 AM – 6:00 PM", "Sunday: Closed"]}
             />
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
             <a
-              href="https://wa.me/919811156482"
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${waMessage}`}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-sm bg-[#25D366] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1FAE54]"
             >
-              <MessageCircle className="h-4 w-4" /> WhatsApp Us
+              <MessageCircle className="h-4 w-4" /> Get Instant Quote on WhatsApp
             </a>
             <a
-              href="tel:+919811156482"
+              href={`tel:${PHONE_PRIMARY.replace(/\s/g, "")}`}
               className="inline-flex items-center gap-2 rounded-sm border border-[color:var(--foreground)]/20 px-5 py-3 text-sm font-semibold transition hover:border-[color:var(--foreground)]"
             >
               <Phone className="h-4 w-4" /> Call Now
             </a>
           </div>
 
-          {/* Map placeholder */}
           <div className="mt-8 overflow-hidden rounded-sm border border-[color:var(--border)]">
             <iframe
               title="Mohit Packaging Industries location"
@@ -720,56 +927,121 @@ function ContactSection() {
         </div>
 
         <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            alert("Thanks — your inquiry will be wired up to backend soon.");
-          }}
+          ref={formRef}
+          onSubmit={onSubmit}
           className="rounded-sm border border-[color:var(--border)] bg-[color:var(--card)] p-6 sm:p-8"
+          noValidate
         >
-          <h3 className="font-display text-xl font-bold">Inquiry Form</h3>
+          <h3 className="font-display text-xl font-bold">Bulk Quote Form</h3>
           <p className="mt-1 text-sm text-[color:var(--muted-foreground)]">
-            Tell us about your packaging requirement.
+            Tell us about your packaging requirement — we reply within one
+            working day.
           </p>
 
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <Field label="Full Name" name="name" placeholder="Your name" required />
-            <Field label="Company" name="company" placeholder="Company name" />
             <Field
-              label="Email"
-              name="email"
-              type="email"
-              placeholder="you@company.com"
+              label="Full Name"
+              value={form.name}
+              onChange={(v) => setField("name", v)}
               required
+              maxLength={100}
+              placeholder="Your name"
             />
-            <Field label="Phone" name="phone" placeholder="+91 ..." required />
+            <Field
+              label="Company Name"
+              value={form.company}
+              onChange={(v) => setField("company", v)}
+              maxLength={150}
+              placeholder="Company name"
+            />
+            <Field
+              label="Phone Number"
+              value={form.phone}
+              onChange={(v) => setField("phone", v)}
+              required
+              maxLength={20}
+              placeholder="+91 ..."
+              type="tel"
+            />
+            <Field
+              label="Email Address"
+              value={form.email}
+              onChange={(v) => setField("email", v)}
+              required
+              maxLength={200}
+              placeholder="you@company.com"
+              type="email"
+            />
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-wider text-[color:var(--muted-foreground)]">
+                Product Required
+              </label>
+              <select
+                value={form.product}
+                onChange={(e) => setField("product", e.target.value)}
+                className="mt-2 w-full rounded-sm border border-[color:var(--border)] bg-[color:var(--beige)] px-3 py-2.5 text-sm outline-none focus:border-[color:var(--primary)]"
+                required
+              >
+                <option value="">Select a product…</option>
+                {PRODUCT_CATEGORIES.map((cat) => (
+                  <optgroup key={cat.label} label={cat.label}>
+                    {cat.items.map((it) => (
+                      <option key={it.name} value={it.name}>
+                        {it.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
             <Field
-              label="Product Required"
-              name="product"
-              placeholder="e.g. 5 Ply boxes, 18×12×10 in"
+              label="Quantity Required"
+              value={form.quantity}
+              onChange={(v) => setField("quantity", v)}
+              maxLength={100}
+              placeholder="e.g. 5,000 units / month"
             />
           </div>
 
           <div className="mt-4">
             <label className="text-xs font-semibold uppercase tracking-wider text-[color:var(--muted-foreground)]">
-              Specifications / Quantity
+              Message / Specifications
             </label>
             <textarea
-              name="message"
+              value={form.message}
+              onChange={(e) => setField("message", e.target.value)}
               rows={4}
+              maxLength={1000}
               className="mt-2 w-full rounded-sm border border-[color:var(--border)] bg-[color:var(--beige)] px-3 py-2.5 text-sm outline-none focus:border-[color:var(--primary)]"
-              placeholder="GSM, ply, dimensions, quantity per month, location..."
+              placeholder="GSM, ply, dimensions, print, delivery location..."
             />
           </div>
+
+          {status.kind === "err" && (
+            <div className="mt-4 rounded-sm border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {status.msg}
+            </div>
+          )}
+          {status.kind === "ok" && (
+            <div className="mt-4 rounded-sm border border-green-300 bg-green-50 px-3 py-2 text-sm text-green-800">
+              Thanks — your quote request has been recorded. Our sales team will
+              respond within one working day.
+            </div>
+          )}
 
           <button
             type="submit"
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-sm bg-[color:var(--primary)] px-6 py-3.5 text-sm font-semibold uppercase tracking-wider text-white transition hover:bg-[#A84714]"
           >
-            Submit Inquiry <ArrowRight className="h-4 w-4" />
+            Submit Bulk Quote Request <ArrowRight className="h-4 w-4" />
           </button>
+
+          <p className="mt-3 text-[11px] leading-relaxed text-[color:var(--muted-foreground)]">
+            Your information is used solely to respond to this quote request.
+          </p>
         </form>
       </div>
     </section>
@@ -806,8 +1078,14 @@ function ContactRow({
 
 function Field({
   label,
+  value,
+  onChange,
   ...rest
-}: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange">) {
   return (
     <div>
       <label className="text-xs font-semibold uppercase tracking-wider text-[color:var(--muted-foreground)]">
@@ -815,9 +1093,30 @@ function Field({
       </label>
       <input
         {...rest}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
         className="mt-2 w-full rounded-sm border border-[color:var(--border)] bg-[color:var(--beige)] px-3 py-2.5 text-sm outline-none focus:border-[color:var(--primary)]"
       />
     </div>
+  );
+}
+
+/* ---------------- Floating WhatsApp ---------------- */
+
+function WhatsAppFloat() {
+  return (
+    <a
+      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+        "Hi Mohit Packaging Industries, I would like a bulk quote.",
+      )}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Get instant quote on WhatsApp"
+      className="fixed bottom-5 right-5 z-50 inline-flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-[#1FAE54] sm:px-5"
+    >
+      <MessageCircle className="h-5 w-5" />
+      <span className="hidden sm:inline">Quote on WhatsApp</span>
+    </a>
   );
 }
 
@@ -842,11 +1141,11 @@ function Footer() {
             </div>
           </div>
           <p className="mt-4 text-sm text-white/60">
-            Manufacturer of corrugated and industrial packaging since 2008.
-            ISO 9001:2008 certified.
+            Manufacturer & Supplier of Corrugated Packaging Solutions since
+            2008. ISO 9001:2008 certified. GST registered business.
           </p>
           <div className="mt-5 inline-flex items-center gap-2 rounded-sm border border-white/15 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/80">
-            <Zap className="h-3.5 w-3.5 text-[color:var(--primary)]" />
+            <BadgeCheck className="h-3.5 w-3.5 text-[color:var(--primary)]" />
             Since 2008
           </div>
         </div>
@@ -874,7 +1173,7 @@ function Footer() {
 
         <div>
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-white">
-            Address
+            Contact
           </div>
           <div className="mt-4 text-sm leading-relaxed text-white/70">
             Vill. Akera, Narayan Vihar,
@@ -883,39 +1182,38 @@ function Footer() {
             <br />
             Haryana – 123106, India
           </div>
-          <div className="mt-4 text-sm text-white/70">
-            <div>+91 98111 56482</div>
-            <div>+91 99921 96665</div>
+          <div className="mt-4 space-y-1 text-sm text-white/70">
+            <div>{PHONE_PRIMARY}</div>
+            <div>{PHONE_SECONDARY}</div>
+            <div>{EMAIL_PRIMARY}</div>
           </div>
         </div>
 
         <div>
           <div className="text-xs font-semibold uppercase tracking-[0.2em] text-white">
-            Compliance
+            Business
           </div>
           <div className="mt-4 space-y-2 text-sm text-white/70">
             <div>
-              <span className="text-white/50">GSTIN:</span> 06ABCDE1234F1Z5
+              <span className="text-white/50">Type:</span> Manufacturer &
+              Supplier
             </div>
             <div>
               <span className="text-white/50">Certification:</span> ISO
               9001:2008
             </div>
+            <div>
+              <span className="text-white/50">Registration:</span> GST
+              Registered
+            </div>
           </div>
 
           <div className="mt-5 text-xs font-semibold uppercase tracking-[0.2em] text-white">
-            Connect
+            Business Hours
           </div>
-          <div className="mt-3 flex gap-2">
-            {["LinkedIn", "IndiaMART", "WhatsApp"].map((s) => (
-              <a
-                key={s}
-                href="#"
-                className="rounded-sm border border-white/15 px-3 py-1.5 text-xs font-semibold text-white/80 transition hover:border-[color:var(--primary)] hover:text-white"
-              >
-                {s}
-              </a>
-            ))}
+          <div className="mt-3 space-y-1 text-sm text-white/70">
+            <div>Mon – Sat: 9:00 AM – 6:00 PM</div>
+            <div>Sunday: Closed</div>
           </div>
         </div>
       </div>
@@ -926,7 +1224,7 @@ function Footer() {
             © {new Date().getFullYear()} Mohit Packaging Industries. All rights
             reserved.
           </div>
-          <div>Made for industrial buyers across India.</div>
+          <div>Dharuhera, Rewari, Haryana — Manufacturer & Supplier.</div>
         </div>
       </div>
     </footer>
@@ -936,20 +1234,39 @@ function Footer() {
 /* ---------------- Page ---------------- */
 
 function Index() {
+  const [form, setForm] = useState<QuoteForm>(EMPTY_FORM);
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  const requestQuoteFor = (productName: string) => {
+    setForm((f) => ({ ...f, product: productName }));
+    // smooth scroll to form
+    const el = document.getElementById("contact");
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  // ensure product names from cards are always recognised by the select
+  useEffect(() => {
+    if (form.product && !ALL_PRODUCT_NAMES.includes(form.product)) {
+      setForm((f) => ({ ...f, product: "" }));
+    }
+  }, [form.product]);
+
   return (
     <div className="min-h-screen bg-[color:var(--beige)] text-[color:var(--foreground)]">
       <Navbar />
       <main>
         <Hero />
-        <div className="rule" />
+        <TrustStrip />
         <ProcessSection />
         <AboutSection />
-        <ProductsSection />
+        <ProductsSection onRequestQuote={requestQuoteFor} />
+        <BusinessFactsSection />
         <WhySection />
         <IndustriesSection />
-        <ContactSection />
+        <ContactSection form={form} setForm={setForm} formRef={formRef} />
       </main>
       <Footer />
+      <WhatsAppFloat />
     </div>
   );
 }
