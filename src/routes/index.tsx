@@ -244,9 +244,9 @@ function Hero() {
           </div>
 
           <div className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-[color:var(--border)] pt-6">
-            <Stat value="15+" label="Years in Operation" />
+            <Stat value="Since" label="2008" />
             <Stat value="ISO" label="9001:2008 Certified" />
-            <Stat value="100%" label="In-House Manufacturing" />
+            <Stat value="26–50" label="Employees" />
           </div>
         </div>
 
