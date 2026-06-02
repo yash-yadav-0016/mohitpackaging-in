@@ -244,9 +244,9 @@ function Hero() {
           </div>
 
           <div className="mt-12 grid max-w-lg grid-cols-3 gap-6 border-t border-[color:var(--border)] pt-6">
-            <Stat value="15+" label="Years in Operation" />
+            <Stat value="Since" label="2008" />
             <Stat value="ISO" label="9001:2008 Certified" />
-            <Stat value="100%" label="In-House Manufacturing" />
+            <Stat value="26–50" label="Employees" />
           </div>
         </div>
 
@@ -415,21 +415,22 @@ function AboutSection() {
         <div className="lg:col-span-6">
           <SectionLabel>About the Company</SectionLabel>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-[42px] lg:leading-[1.1]">
-            A manufacturing-first packaging partner, operating since 2008.
+            Manufacturer & Supplier of corrugated and industrial packaging.
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[color:var(--muted-foreground)]">
-            Mohit Packaging Industries is a Dharuhera-based manufacturer of
-            corrugated and industrial packaging. The unit is ISO 9001:2008
-            certified and runs an integrated line covering ply formation,
-            die-cutting, stitching and dispatch — built to handle bulk
-            production schedules for industrial buyers.
+            Mohit Packaging Industries is based in Dharuhera, Haryana, and
+            manufactures 3-ply, 5-ply and 7-ply corrugated boxes, die cut
+            boxes, corrugated sheets, wooden pallets, wooden boxes and edge
+            protectors. The unit is ISO 9001:2008 certified and runs an
+            integrated line covering ply formation, die-cutting, stitching
+            and dispatch.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
             <Fact icon={<Factory className="h-5 w-5" />} label="Established 2008" />
             <Fact icon={<ShieldCheck className="h-5 w-5" />} label="ISO 9001:2008 Certified" />
-            <Fact icon={<Boxes className="h-5 w-5" />} label="Bulk Production Capability" />
-            <Fact icon={<Wrench className="h-5 w-5" />} label="Industrial Packaging Expertise" />
+            <Fact icon={<Boxes className="h-5 w-5" />} label="26–50 Employees" />
+            <Fact icon={<Wrench className="h-5 w-5" />} label="₹5–25 Crore Turnover" />
           </div>
         </div>
       </div>
@@ -487,7 +488,7 @@ const PRODUCTS = [
     spec: "Heavy machinery packaging • Nailed & screwed assembly",
   },
   {
-    name: "Paper Edge Protectors",
+    name: "Edge Protectors",
     img: pEdge,
     spec: "L-angle boards • Pallet & corner protection • High GSM",
   },
@@ -558,12 +559,12 @@ function ProductCard({ product }: { product: (typeof PRODUCTS)[number] }) {
 /* ---------------- Why Choose Us ---------------- */
 
 const WHY = [
-  { icon: Clock, title: "15+ Years Experience", desc: "Operating since 2008 with consistent industrial delivery." },
+  { icon: Clock, title: "Since 2008", desc: "Manufacturer & supplier of corrugated and industrial packaging with consistent delivery." },
   { icon: ShieldCheck, title: "Quality Control Process", desc: "Batch-level inspection on GSM, burst and edge strength." },
   { icon: Factory, title: "Bulk Manufacturing", desc: "Integrated line built for high-volume production runs." },
   { icon: Truck, title: "Timely Delivery", desc: "Planned dispatch windows across NCR and pan-India." },
   { icon: Wrench, title: "Custom Solutions", desc: "Bespoke sizing, ply, GSM and print on every order." },
-  { icon: CheckCircle2, title: "Industrial Reliability", desc: "Trusted by manufacturing and supply chain partners." },
+  { icon: CheckCircle2, title: "ISO 9001:2008 Certified", desc: "Quality management system certified manufacturing unit." },
 ];
 
 function WhySection() {
@@ -573,7 +574,7 @@ function WhySection() {
         <div className="max-w-2xl">
           <SectionLabel>Why Choose Us</SectionLabel>
           <h2 className="mt-4 text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Built around the things buyers actually need.
+            Manufacturing capability, quality control and on-time delivery.
           </h2>
         </div>
 
@@ -623,11 +624,11 @@ function IndustriesSection() {
             Industries Served
           </div>
           <h2 className="mt-4 font-display text-3xl font-bold sm:text-4xl lg:text-5xl">
-            Trusted across industrial verticals.
+            Packaging for manufacturing and logistics.
           </h2>
           <p className="mt-4 text-base text-white/70">
-            From e-commerce shipments to heavy industrial supply chains —
-            packaging that arrives intact.
+            Supplying corrugated and wooden packaging to e-commerce, FMCG,
+            logistics, electronics and industrial supply chains across India.
           </p>
         </div>
 
@@ -846,7 +847,7 @@ function Footer() {
           </p>
           <div className="mt-5 inline-flex items-center gap-2 rounded-sm border border-white/15 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/80">
             <Zap className="h-3.5 w-3.5 text-[color:var(--primary)]" />
-            15+ Years Experience
+            Since 2008
           </div>
         </div>
 
