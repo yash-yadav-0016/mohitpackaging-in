@@ -219,7 +219,7 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-24 kraft-texture"
+      className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-24 bg-[#FFF5E9]"
     >
       <div className="pointer-events-none absolute inset-0 flute-animated opacity-60" />
       <div className="pointer-events-none absolute -right-20 top-32 hidden lg:block">
@@ -249,7 +249,7 @@ function Hero() {
 
         <div className="reveal reveal-delay-2 relative">
           <div className="absolute -inset-3 -z-10 rounded-sm bg-[color:var(--kraft)]/15" />
-          <div className="relative overflow-hidden rounded-sm border border-[color:var(--border)] bg-black p-8 shadow-2xl flex items-center justify-center aspect-[4/3]">
+          <div className="relative overflow-hidden rounded-sm border border-[color:var(--border)] bg-white p-8 shadow-2xl flex items-center justify-center aspect-[4/3]">
             <img
               src={logoMohit}
 
@@ -258,8 +258,8 @@ function Hero() {
               height={960}
               className="max-h-full w-auto object-contain"
             />
-            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent p-5">
-              <div className="text-white">
+            <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t from-black/5 to-transparent p-5">
+              <div className="text-[color:var(--foreground)]">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-80">
                   Manufacturing Unit
                 </div>
@@ -267,8 +267,8 @@ function Hero() {
                   Dharuhera, Haryana
                 </div>
               </div>
-              <div className="hidden h-12 w-px bg-white/30 sm:block" />
-              <div className="hidden text-right text-white sm:block">
+              <div className="hidden h-12 w-px bg-[color:var(--border)] sm:block" />
+              <div className="hidden text-right text-[color:var(--foreground)] sm:block">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.2em] opacity-80">
                   Certification
                 </div>
@@ -1119,12 +1119,12 @@ function WhatsAppFloat() {
 
 function Footer() {
   return (
-    <footer className="kraft-texture-dark border-t border-white/10 text-white/80">
+    <footer className="bg-[#1A1A1A] border-t border-white/10 text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-4 lg:px-8">
         <div className="lg:col-span-1">
           <div className="flex items-center gap-3">
             <img 
-              src={heroBoxes} 
+              src={logoMohit} 
               alt="Mohit Packaging Industries Logo" 
               className="h-12 w-auto object-contain brightness-0 invert opacity-90"
             />
