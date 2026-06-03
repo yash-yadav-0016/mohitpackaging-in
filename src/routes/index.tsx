@@ -31,9 +31,11 @@ import process1 from "../assets/process-1.jpg";
 import process2 from "../assets/process-2.jpg";
 import process3 from "../assets/process-3.jpg";
 import process4 from "../assets/process-4.jpg";
-import p3ply from "../assets/product-3ply.jpg";
-import p5ply from "../assets/product-5ply.jpg";
-import p7ply from "../assets/product-7ply.jpg";
+import p3ply from "../assets/product-3ply.png";
+import p5ply from "../assets/product-5ply.png";
+import p7ply from "../assets/product-7ply.png";
+import pPrinted from "../assets/product-printed.png";
+import pBranded from "../assets/product-branded.png";
 import pDiecut from "../assets/product-diecut.jpg";
 import pSheets from "../assets/product-sheets.jpg";
 import pPallet from "../assets/product-pallet.jpg";
@@ -485,8 +487,8 @@ const PRODUCT_CATEGORIES: { label: string; items: Product[] }[] = [
       { name: "3 Ply Corrugated Boxes", img: p3ply },
       { name: "5 Ply Corrugated Boxes", img: p5ply },
       { name: "7 Ply Corrugated Boxes", img: p7ply },
-      { name: "Printed Corrugated Boxes", img: p5ply },
-      { name: "Industrial Corrugated Boxes", img: p7ply },
+      { name: "Printed Corrugated Boxes", img: pPrinted },
+      { name: "Industrial Corrugated Boxes", img: pBranded },
     ],
   },
   {
