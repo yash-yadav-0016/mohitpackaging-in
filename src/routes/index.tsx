@@ -1121,17 +1121,11 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-4 lg:px-8">
         <div className="lg:col-span-1">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-[color:var(--primary)] text-white">
-              <Package className="h-5 w-5" strokeWidth={2.5} />
-            </div>
-            <div className="leading-tight">
-              <div className="font-display text-base font-bold text-white">
-                Mohit Packaging
-              </div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
-                Industries
-              </div>
-            </div>
+            <img 
+              src={heroBoxes} 
+              alt="Mohit Packaging Industries Logo" 
+              className="h-12 w-auto object-contain brightness-0 invert opacity-90"
+            />
           </div>
           <p className="mt-4 text-sm text-white/60">
             Manufacturer & Supplier of Corrugated Packaging Solutions since
