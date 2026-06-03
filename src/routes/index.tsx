@@ -26,7 +26,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-import heroBoxes from "../assets/hero-boxes.jpg";
+import heroBoxes from "../assets/logo-mohit.png";
 import process1 from "../assets/process-1.jpg";
 import process2 from "../assets/process-2.jpg";
 import process3 from "../assets/process-3.jpg";
@@ -39,7 +39,7 @@ import pSheets from "../assets/product-sheets.jpg";
 import pPallet from "../assets/product-pallet.jpg";
 import pWoodbox from "../assets/product-woodbox.jpg";
 import pEdge from "../assets/product-edge.jpg";
-import aboutFactory from "../assets/about-factory.jpg";
+import aboutFactory from "../assets/factory-floor.webp";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -148,17 +148,11 @@ function Navbar() {
     >
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
         <a href="#home" className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-[color:var(--primary)] text-white">
-            <Package className="h-5 w-5" strokeWidth={2.5} />
-          </div>
-          <div className="leading-tight">
-            <div className="font-display text-base font-bold text-[color:var(--foreground)]">
-              Mohit Packaging
-            </div>
-            <div className="text-[10px] font-semibold tracking-[0.18em] uppercase text-[color:var(--kraft)]">
-              Industries
-            </div>
-          </div>
+          <img 
+            src={heroBoxes} 
+            alt="Mohit Packaging Industries Logo" 
+            className="h-12 w-auto object-contain"
+          />
         </a>
 
         <nav className="hidden items-center gap-8 lg:flex">
@@ -254,13 +248,13 @@ function Hero() {
 
         <div className="reveal reveal-delay-2 relative">
           <div className="absolute -inset-3 -z-10 rounded-sm bg-[color:var(--kraft)]/15" />
-          <div className="relative overflow-hidden rounded-sm border border-[color:var(--border)] shadow-2xl">
+          <div className="relative overflow-hidden rounded-sm border border-[color:var(--border)] bg-black p-8 shadow-2xl flex items-center justify-center aspect-[4/3]">
             <img
               src={heroBoxes}
-              alt="Stack of corrugated boxes in Mohit Packaging Industries factory warehouse"
+              alt="Mohit Packaging Industries Logo"
               width={1280}
               height={960}
-              className="h-full w-full object-cover"
+              className="max-h-full w-auto object-contain"
             />
             <div className="absolute bottom-0 left-0 right-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent p-5">
               <div className="text-white">
@@ -1127,17 +1121,11 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 lg:grid-cols-4 lg:px-8">
         <div className="lg:col-span-1">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-[color:var(--primary)] text-white">
-              <Package className="h-5 w-5" strokeWidth={2.5} />
-            </div>
-            <div className="leading-tight">
-              <div className="font-display text-base font-bold text-white">
-                Mohit Packaging
-              </div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/60">
-                Industries
-              </div>
-            </div>
+            <img 
+              src={heroBoxes} 
+              alt="Mohit Packaging Industries Logo" 
+              className="h-12 w-auto object-contain brightness-0 invert opacity-90"
+            />
           </div>
           <p className="mt-4 text-sm text-white/60">
             Manufacturer & Supplier of Corrugated Packaging Solutions since
