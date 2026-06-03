@@ -26,7 +26,7 @@ import {
   BadgeCheck,
 } from "lucide-react";
 
-import heroBoxes from "../assets/logo-mohit.png";
+import logoMohit from "../assets/logo-mohit.png";
 import process1 from "../assets/process-1.jpg";
 import process2 from "../assets/process-2.jpg";
 import process3 from "../assets/process-3.jpg";
@@ -39,7 +39,7 @@ import pSheets from "../assets/product-sheets.jpg";
 import pPallet from "../assets/product-pallet.jpg";
 import pWoodbox from "../assets/product-woodbox.jpg";
 import pEdge from "../assets/product-edge.jpg";
-import aboutFactory from "../assets/factory-floor.webp";
+import aboutFactory from "../assets/factory-floor.png";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -149,7 +149,8 @@ function Navbar() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
         <a href="#home" className="flex items-center gap-3">
           <img 
-            src={heroBoxes} 
+            src={logoMohit} 
+
             alt="Mohit Packaging Industries Logo" 
             className="h-12 w-auto object-contain"
           />
@@ -250,7 +251,8 @@ function Hero() {
           <div className="absolute -inset-3 -z-10 rounded-sm bg-[color:var(--kraft)]/15" />
           <div className="relative overflow-hidden rounded-sm border border-[color:var(--border)] bg-black p-8 shadow-2xl flex items-center justify-center aspect-[4/3]">
             <img
-              src={heroBoxes}
+              src={logoMohit}
+
               alt="Mohit Packaging Industries Logo"
               width={1280}
               height={960}
