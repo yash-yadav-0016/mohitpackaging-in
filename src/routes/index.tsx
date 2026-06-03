@@ -48,7 +48,7 @@ export const Route = createFileRoute("/")({
 });
 
 /* ----- Placeholders for future integration ----- */
-const WHATSAPP_NUMBER = "919811156482"; // E.164 without '+', update when finalised
+const WHATSAPP_NUMBER = "919887196665"; // E.164 without '+', update when finalised
 const PHONE_PRIMARY = "+91 98111 56482";
 const PHONE_SECONDARY = "+91 99921 96665";
 const EMAIL_PRIMARY = "sales@mohitpackaging.in";
