@@ -1126,7 +1126,7 @@ function Footer() {
             <img 
               src={logoMohit} 
               alt="Mohit Packaging Industries Logo" 
-              className="h-12 w-auto object-contain brightness-0 invert opacity-90"
+              className="h-12 w-auto object-contain brightness-0 invert"
             />
           </div>
           <p className="mt-4 text-sm text-white/60">
