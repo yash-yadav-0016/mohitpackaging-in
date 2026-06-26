@@ -845,7 +845,20 @@ function ContactSection({
       setStatus({ kind: "err", msg: err });
       return;
     }
-    // TODO: wire to Web3Forms (POST https://api.web3forms.com/submit with access_key)
+    // Send submission straight to business WhatsApp as a prefilled chat.
+    const lines = [
+      "*New Bulk Quote Request*",
+      "",
+      `Name: ${form.name}`,
+      form.company && `Company: ${form.company}`,
+      `Phone: ${form.phone}`,
+      form.email && `Email: ${form.email}`,
+      form.product && `Product: ${form.product}`,
+      form.quantity && `Quantity: ${form.quantity}`,
+      form.message && `Message: ${form.message}`,
+    ].filter(Boolean);
+    const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join("\n"))}`;
+    window.open(url, "_blank", "noopener,noreferrer");
     setStatus({ kind: "ok" });
     setForm(EMPTY_FORM);
   };
