@@ -54,6 +54,40 @@ const PHONE_SECONDARY = "+91 99921 96665";
 const EMAIL_PRIMARY = "sales@mohitpackaging.in";
 const INSTAGRAM_URL = "https://www.instagram.com/mohit.packaging/?utm_source=ig_web_button_share_sheet";
 
+/* ---------------- Instagram Icon (official gradient) ---------------- */
+function InstagramIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      <defs>
+        <radialGradient
+          id="igGradient"
+          cx="0"
+          cy="0"
+          r="32"
+          gradientUnits="userSpaceOnUse"
+        >
+          <stop offset="0%" stopColor="#f09433" />
+          <stop offset="25%" stopColor="#e6683c" />
+          <stop offset="50%" stopColor="#dc2743" />
+          <stop offset="75%" stopColor="#cc2366" />
+          <stop offset="100%" stopColor="#bc1888" />
+        </radialGradient>
+      </defs>
+      <rect x="2" y="2" width="20" height="20" rx="6" fill="url(#igGradient)" />
+      <path
+        d="M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Zm0 8.2A3.2 3.2 0 1 1 12 8.8a3.2 3.2 0 0 1 0 6.4ZM18 7.25a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5Z"
+        fill="white"
+      />
+    </svg>
+  );
+}
+
 /* ---------------- Reusable bits ---------------- */
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
