@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
 const WHATSAPP_NUMBER = "919887196665"; // E.164 without '+', update when finalised
 const PHONE_PRIMARY = "+91 98111 56482";
 const PHONE_SECONDARY = "+91 99921 96665";
-const EMAIL_PRIMARY = "sales@mohitpackaging.in";
+const EMAIL_PRIMARY = "mohitpackaging96@gmail.com";
 const INSTAGRAM_URL = "https://www.instagram.com/mohit.packaging/?utm_source=ig_web_button_share_sheet";
 
 /* ---------------- Instagram Icon (official gradient) ---------------- */
