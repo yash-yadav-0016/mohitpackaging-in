@@ -133,7 +133,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           },
           areaServed: "IN",
           telephone: "+91-98111-56482",
-          email: "sales@mohitpackaging.in",
+          email: "mohitpackaging96@gmail.com",
           hasOfferCatalog: {
             "@type": "OfferCatalog",
             name: "Industrial Packaging",
