@@ -155,6 +155,28 @@ function useReveal<T extends HTMLElement>() {
   return { ref, shown };
 }
 
+/* Scroll progress inside an element (0→1) */
+function useScrollProgress<T extends HTMLElement>() {
+  const ref = useRef<T | null>(null);
+  const [progress, setProgress] = useState(0);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const update = () => {
+      const rect = el.getBoundingClientRect();
+      const windowH = window.innerHeight;
+      // start when top hits bottom of viewport, end when bottom hits top
+      const total = rect.height + windowH;
+      const traveled = windowH - rect.top;
+      setProgress(Math.min(1, Math.max(0, traveled / total)));
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    update();
+    return () => window.removeEventListener("scroll", update);
+  }, []);
+  return { ref, progress };
+}
+
 /* ---------------- Nav ---------------- */
 
 function Navbar() {
@@ -381,6 +403,275 @@ const PROCESS = [
   },
 ];
 
+/* ---------------- Box Transform Animation ---------------- */
+
+function BoxTransformAnimation() {
+  const { ref, progress } = useScrollProgress<HTMLDivElement>();
+
+  // Stage breakpoints (0–1)
+  // 0.0–0.2 → paper roll (idle)
+  // 0.2–0.4 → roll unspools into flat sheet
+  // 0.4–0.6 → sheet corrugates (flutes appear)
+  // 0.6–0.8 → sheet gets cut / scored
+  // 0.8–1.0 → folds into box
+
+  const p = progress;
+
+  // Roll radius shrinks as paper unspools
+  const rollRadius = 38 - lerp(0, 22, remap(p, 0.2, 0.4));
+
+  // Sheet width grows as paper unspools
+  const sheetW = lerp(0, 220, remap(p, 0.2, 0.45));
+
+  // Flute amplitude grows during corrugation stage
+  const fluteAmp = lerp(0, 7, remap(p, 0.4, 0.6));
+
+  // Cut line appears
+  const cutOpacity = remap(p, 0.6, 0.72);
+
+  // Box fold: 0 = flat, 1 = box
+  const foldP = remap(p, 0.75, 1.0);
+
+  // Label opacity per stage
+  const label1Op = remap(p, 0.05, 0.2);
+  const label2Op = Math.min(remap(p, 0.25, 0.4), 1 - remap(p, 0.55, 0.65));
+  const label3Op = Math.min(remap(p, 0.42, 0.58), 1 - remap(p, 0.7, 0.8));
+  const label4Op = remap(p, 0.78, 0.95);
+
+  // Box 3D fold values
+  const topFlapAngle = lerp(0, -70, foldP);    // top flap folds down
+  const sideFlapAngle = lerp(0, -90, foldP);   // side flap folds in
+  const boxDepth = lerp(0, 28, foldP);          // front face pushes out
+
+  return (
+    <div
+      ref={ref}
+      className="relative mx-auto my-16 max-w-2xl select-none"
+      aria-hidden="true"
+    >
+      {/* sticky viewport */}
+      <div className="sticky top-[20vh] flex flex-col items-center">
+        <svg
+          viewBox="0 0 480 200"
+          xmlns="http://www.w3.org/2000/svg"
+          className="w-full max-w-lg"
+        >
+          {/* ---- Paper roll (left anchor) ---- */}
+          <g transform="translate(70,100)">
+            {/* Roll body */}
+            <ellipse
+              cx={0} cy={0}
+              rx={rollRadius * 0.35}
+              ry={rollRadius}
+              fill="#D4A96A"
+              stroke="#8B5E3C"
+              strokeWidth={1.5}
+            />
+            {/* Roll rings for depth */}
+            {[0.6, 0.3].map((s, i) => (
+              <ellipse
+                key={i}
+                cx={0} cy={0}
+                rx={rollRadius * 0.35 * s}
+                ry={rollRadius * s}
+                fill="none"
+                stroke="#8B5E3C"
+                strokeWidth={0.8}
+                opacity={0.5}
+              />
+            ))}
+            {/* Core hole */}
+            <ellipse cx={0} cy={0} rx={5} ry={8} fill="#8B5E3C" opacity={0.6} />
+          </g>
+
+          {/* ---- Flat/corrugated sheet unspooling ---- */}
+          {sheetW > 2 && (
+            <g transform="translate(70,100)">
+              {/* Sheet base (flat liner) */}
+              <rect
+                x={rollRadius * 0.32}
+                y={-14}
+                width={sheetW}
+                height={28}
+                fill="#E8C97A"
+                stroke="#8B5E3C"
+                strokeWidth={1}
+                rx={1}
+              />
+
+              {/* Corrugation flutes */}
+              {fluteAmp > 0.5 && (
+                <path
+                  d={buildFlutePath(
+                    rollRadius * 0.32 + 4,
+                    sheetW - 8,
+                    fluteAmp,
+                    14,
+                  )}
+                  fill="none"
+                  stroke="#C65A1E"
+                  strokeWidth={1.2}
+                  opacity={Math.min(1, fluteAmp / 5)}
+                />
+              )}
+
+              {/* Cut line */}
+              <line
+                x1={rollRadius * 0.32 + sheetW - 6}
+                y1={-18}
+                x2={rollRadius * 0.32 + sheetW - 6}
+                y2={18}
+                stroke="#C65A1E"
+                strokeWidth={2}
+                strokeDasharray="3 2"
+                opacity={cutOpacity}
+              />
+            </g>
+          )}
+
+          {/* ---- Folding box (appears during fold stage) ---- */}
+          {foldP > 0.05 && (
+            <g transform="translate(320,100)">
+              {/* Back panel */}
+              <rect
+                x={-50} y={-40}
+                width={100} height={80}
+                fill="#D4A96A"
+                stroke="#8B5E3C"
+                strokeWidth={1.5}
+                rx={2}
+              />
+              {/* Front face (pushes forward) */}
+              <rect
+                x={-50 + boxDepth * 0.3}
+                y={-40 + boxDepth * 0.3}
+                width={100}
+                height={80}
+                fill="#E8C97A"
+                stroke="#8B5E3C"
+                strokeWidth={1.5}
+                rx={2}
+              />
+              {/* Side connecting lines */}
+              <line x1={-50} y1={-40} x2={-50 + boxDepth * 0.3} y2={-40 + boxDepth * 0.3} stroke="#8B5E3C" strokeWidth={1} />
+              <line x1={50} y1={-40} x2={50 + boxDepth * 0.3} y2={-40 + boxDepth * 0.3} stroke="#8B5E3C" strokeWidth={1} />
+              <line x1={50} y1={40} x2={50 + boxDepth * 0.3} y2={40 + boxDepth * 0.3} stroke="#8B5E3C" strokeWidth={1} />
+              <line x1={-50} y1={40} x2={-50 + boxDepth * 0.3} y2={40 + boxDepth * 0.3} stroke="#8B5E3C" strokeWidth={1} />
+
+              {/* Top flap */}
+              <g style={{ transformOrigin: "0px -40px", transform: `rotateX(${topFlapAngle}deg)` }}>
+                <rect
+                  x={-50 + boxDepth * 0.3}
+                  y={-40 + boxDepth * 0.3 - 28 * foldP}
+                  width={100}
+                  height={28 * foldP}
+                  fill="#C8B070"
+                  stroke="#8B5E3C"
+                  strokeWidth={1}
+                  rx={1}
+                  opacity={foldP}
+                />
+              </g>
+
+              {/* Flutes on front face */}
+              {foldP > 0.3 && (
+                <path
+                  d={buildFlutePath(
+                    -50 + boxDepth * 0.3 + 4,
+                    96,
+                    5 * foldP,
+                    40 + boxDepth * 0.3,
+                    -40 + boxDepth * 0.3,
+                  )}
+                  fill="none"
+                  stroke="#C65A1E"
+                  strokeWidth={0.8}
+                  opacity={foldP * 0.5}
+                />
+              )}
+
+              {/* ISO badge on box */}
+              {foldP > 0.85 && (
+                <g opacity={(foldP - 0.85) / 0.15}>
+                  <rect
+                    x={-50 + boxDepth * 0.3 + 8}
+                    y={-40 + boxDepth * 0.3 + 8}
+                    width={42}
+                    height={16}
+                    rx={2}
+                    fill="#C65A1E"
+                    opacity={0.9}
+                  />
+                  <text
+                    x={-50 + boxDepth * 0.3 + 29}
+                    y={-40 + boxDepth * 0.3 + 20}
+                    textAnchor="middle"
+                    fontSize={7}
+                    fontWeight="bold"
+                    fill="white"
+                    fontFamily="Inter, sans-serif"
+                  >
+                    ISO 9001
+                  </text>
+                </g>
+              )}
+            </g>
+          )}
+
+          {/* ---- Stage Labels ---- */}
+          <text x={70} y={185} textAnchor="middle" fontSize={9} fill="#8B5E3C" fontFamily="Inter, sans-serif" fontWeight={500} opacity={label1Op}>Kraft Paper Roll</text>
+          <text x={200} y={185} textAnchor="middle" fontSize={9} fill="#8B5E3C" fontFamily="Inter, sans-serif" fontWeight={500} opacity={label2Op}>Corrugation</text>
+          <text x={290} y={185} textAnchor="middle" fontSize={9} fill="#C65A1E" fontFamily="Inter, sans-serif" fontWeight={500} opacity={label3Op}>Cutting & Scoring</text>
+          <text x={320} y={185} textAnchor="middle" fontSize={9} fill="#C65A1E" fontFamily="Inter, sans-serif" fontWeight={500} opacity={label4Op}>Finished Box ✓</text>
+        </svg>
+
+        {/* Progress bar */}
+        <div className="mt-3 h-0.5 w-48 overflow-hidden rounded-full bg-[#DDD3BD]">
+          <div
+            className="h-full rounded-full bg-[#C65A1E] transition-none"
+            style={{ width: `${progress * 100}%` }}
+          />
+        </div>
+        <p className="mt-2 text-[10px] font-medium uppercase tracking-[0.18em] text-[#8B5E3C] opacity-60">
+          Scroll to see the process
+        </p>
+      </div>
+
+      {/* Scroll spacer — taller = slower animation */}
+      <div style={{ height: "180vh" }} />
+    </div>
+  );
+}
+
+/* SVG flute wave path builder */
+function buildFlutePath(
+  startX: number,
+  width: number,
+  amp: number,
+  halfH: number,
+  baseY = 0,
+): string {
+  const segments = Math.floor(width / 10);
+  const step = width / segments;
+  let d = `M ${startX} ${baseY}`;
+  for (let i = 0; i <= segments; i++) {
+    const x = startX + i * step;
+    const y = baseY + Math.sin((i / segments) * Math.PI * 8) * amp;
+    d += ` L ${x} ${y}`;
+  }
+  return d;
+}
+
+/* Linear interpolation */
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * Math.min(1, Math.max(0, t));
+}
+
+/* Remap value from [inMin,inMax] → [0,1] */
+function remap(val: number, inMin: number, inMax: number) {
+  return Math.min(1, Math.max(0, (val - inMin) / (inMax - inMin)));
+}
+
 function ProcessSection() {
   return (
     <section id="process" className="relative bg-[color:var(--beige)] py-24">
@@ -395,6 +686,9 @@ function ProcessSection() {
             and on-time delivery.
           </p>
         </div>
+
+        {/* Scroll-driven transformation animation */}
+        <BoxTransformAnimation />
 
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {PROCESS.map((s, i) => (
