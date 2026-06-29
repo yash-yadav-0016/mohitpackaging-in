@@ -42,6 +42,7 @@ import pPallet from "../assets/product-pallet.jpg";
 import pWoodbox from "../assets/product-woodbox.jpg";
 import pEdge from "../assets/product-edge.jpg";
 import aboutFactory from "../assets/factory-floor.png";
+import heroBgVideo from "../assets/hero-bg.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -278,17 +279,41 @@ function Hero() {
   return (
     <section
       id="home"
-      className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-24 bg-[#FFF5E9]"
+      className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-24"
     >
-      <div className="pointer-events-none absolute inset-0 flute-animated opacity-60" />
-      <div className="pointer-events-none absolute -right-20 top-32 hidden lg:block">
-        <div className="paper-fold h-40 w-40 origin-bottom rounded-sm bg-[color:var(--kraft)]/15 shadow-inner" />
-      </div>
-      <div className="pointer-events-none absolute left-10 bottom-10 hidden lg:block">
-        <div className="float-y h-24 w-24 rounded-sm border border-[color:var(--kraft)]/30" />
-      </div>
+      {/* Video background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ zIndex: 0 }}
+      >
+        <source src={heroBgVideo.url} type="video/mp4" />
+      </video>
 
-      <div className="relative mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8">
+      {/* Kraft overlay — hides watermark, keeps text readable */}
+      <div
+        className="absolute inset-0"
+        style={{
+          zIndex: 1,
+          background:
+            "linear-gradient(135deg, rgba(245,241,232,0.82) 0%, rgba(236,229,210,0.75) 50%, rgba(245,241,232,0.88) 100%)",
+        }}
+      />
+
+      {/* Animated flute lines on top */}
+      <div
+        className="pointer-events-none absolute inset-0 flute-animated opacity-40"
+        style={{ zIndex: 2 }}
+      />
+
+      {/* All existing content — add style zIndex 3 to this div */}
+      <div
+        className="relative mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8"
+        style={{ zIndex: 3 }}
+      >
         <div className="reveal">
           <SectionLabel>EST. 2008 • Dharuhera, Haryana</SectionLabel>
           <h1 className="mt-6 text-4xl font-bold leading-[1.05] text-[color:var(--foreground)] sm:text-5xl lg:text-6xl">
