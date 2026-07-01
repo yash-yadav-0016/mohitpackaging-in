@@ -276,8 +276,17 @@ function Navbar() {
 /* ---------------- Hero ---------------- */
 
 function Hero() {
+  const { ref: heroRef, progress } = useScrollProgress<HTMLElement>();
+
+  // Scroll-linked parallax offsets (0 → 1 as hero leaves viewport)
+  const videoY = progress * 80;
+  const textY = progress * -28;
+  const cardY = progress * -44;
+  const cardScale = 1 - progress * 0.04;
+
   return (
     <section
+      ref={heroRef}
       id="home"
       className="relative overflow-hidden pt-32 pb-20 lg:pt-40 lg:pb-24"
     >
@@ -288,7 +297,7 @@ function Hero() {
         loop
         playsInline
         className="absolute inset-0 h-full w-full object-cover"
-        style={{ zIndex: 0 }}
+        style={{ zIndex: 0, transform: `translateY(${videoY}px)` }}
       >
         <source src={heroBgVideo.url} type="video/mp4" />
       </video>
@@ -309,12 +318,15 @@ function Hero() {
         style={{ zIndex: 2 }}
       />
 
-      {/* All existing content — add style zIndex 3 to this div */}
+      {/* Content wrapper at z-index 3 */}
       <div
         className="relative mx-auto grid max-w-7xl gap-12 px-5 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8"
         style={{ zIndex: 3 }}
       >
-        <div className="reveal">
+        <div
+          className="reveal"
+          style={{ transform: `translateY(${textY}px)` }}
+        >
           <SectionLabel>EST. 2008 • Dharuhera, Haryana</SectionLabel>
           <h1 className="mt-6 text-4xl font-bold leading-[1.05] text-[color:var(--foreground)] sm:text-5xl lg:text-6xl">
             Corrugated Box{" "}
@@ -331,7 +343,10 @@ function Hero() {
           </div>
         </div>
 
-        <div className="reveal reveal-delay-2 relative">
+        <div
+          className="reveal reveal-delay-2 relative"
+          style={{ transform: `translateY(${cardY}px) scale(${cardScale})` }}
+        >
           <div className="absolute -inset-3 -z-10 rounded-sm bg-[color:var(--kraft)]/15" />
           <div className="relative overflow-hidden rounded-sm border border-[color:var(--border)] bg-white p-8 shadow-2xl flex items-center justify-center aspect-[4/3]">
             <img
