@@ -7,6 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 import appCss from "../styles.css?url";
 
@@ -73,8 +74,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
-        title:
-          "Corrugated Box Manufacturer & Supplier in Dharuhera | Mohit Packaging Industries",
+        title: "Corrugated Box Manufacturer & Supplier in Dharuhera | Mohit Packaging Industries",
       },
       {
         name: "description",
@@ -84,8 +84,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "theme-color", content: "#F5F1E8" },
       {
         property: "og:title",
-        content:
-          "Corrugated Box Manufacturer & Supplier Since 2008 | Mohit Packaging Industries",
+        content: "Corrugated Box Manufacturer & Supplier Since 2008 | Mohit Packaging Industries",
       },
       {
         property: "og:description",
@@ -97,11 +96,31 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "MOHIT PACKAGING INDUSTRIES" },
       { property: "og:title", content: "MOHIT PACKAGING INDUSTRIES" },
       { name: "twitter:title", content: "MOHIT PACKAGING INDUSTRIES" },
-      { name: "description", content: "A premium B2B website for Mohit Packaging Industries, showcasing corrugated packaging solutions." },
-      { property: "og:description", content: "A premium B2B website for Mohit Packaging Industries, showcasing corrugated packaging solutions." },
-      { name: "twitter:description", content: "A premium B2B website for Mohit Packaging Industries, showcasing corrugated packaging solutions." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/JakCj6WikVOR47W4rOTKRtVfN883/social-images/social-1780486649076-ChatGPT_Image_Jun_2,_2026,_05_00_36_PM__002.webp" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/JakCj6WikVOR47W4rOTKRtVfN883/social-images/social-1780486649076-ChatGPT_Image_Jun_2,_2026,_05_00_36_PM__002.webp" },
+      {
+        name: "description",
+        content:
+          "A premium B2B website for Mohit Packaging Industries, showcasing corrugated packaging solutions.",
+      },
+      {
+        property: "og:description",
+        content:
+          "A premium B2B website for Mohit Packaging Industries, showcasing corrugated packaging solutions.",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "A premium B2B website for Mohit Packaging Industries, showcasing corrugated packaging solutions.",
+      },
+      {
+        property: "og:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/JakCj6WikVOR47W4rOTKRtVfN883/social-images/social-1780486649076-ChatGPT_Image_Jun_2,_2026,_05_00_36_PM__002.webp",
+      },
+      {
+        name: "twitter:image",
+        content:
+          "https://storage.googleapis.com/gpt-engineer-file-uploads/JakCj6WikVOR47W4rOTKRtVfN883/social-images/social-1780486649076-ChatGPT_Image_Jun_2,_2026,_05_00_36_PM__002.webp",
+      },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
@@ -165,7 +184,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -175,6 +193,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
       <body>
         {children}
         <Scripts />
+        <SpeedInsights />
       </body>
     </html>
   );
